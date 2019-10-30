@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta name="description" content="Come shoot yourself on this super fun game!">
+  <meta name="keywords" content="engineering, russian roulette, gun">
+  <title>Russian roulette</title>
+  <link href="css.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+
+  <div class="menu">
+      <div class="reload">
+        <input type="text" id="rounds" value="1">
+        <div id="reload">Reload!</div>
+      </div>
+  </div>
+
+  <div id="gun">
+    <div class="handle"></div>
+    <div class="gun"> 
+      <div class="gun_bullets"></div>
+      <div class="gun_barrel"></div>
+      <div class="gun_inside"></div>
+    </div>
+  </div>
+  <div class="dead" id="dead">YOU DIED!</div>
+ <div class="alive" id="alive">CLICK!</div>
+<div id="footer">chkrr00k</div>
+ 
+  <script>
+    
+  	document.getElementById("gun").onmousedown = () => {
+	  let xhr = new XMLHttpRequest();
+      xhr.onload = () =>{
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            if(xhr.responseText == "True"){
+            	document.getElementById("dead").style.visibility = "visible";
+            }else{
+            	document.getElementById("alive").style.visibility = "visible";
+                let s = document.getElementById('alive').style;
+                s.opacity = 1;
+                setTimeout(()=>{
+					(function fade(){
+                    	if((s.opacity-=.1) < 0){ 
+                        	s.visibility = "hidden";
+                        }else{ 
+                        	setTimeout(fade,40);
+                        }
+                    })(); 
+                }, 3e2);
+            }
+        }
+      };
+      xhr.open("GET", "/roulette/gun.php?shoot");
+      xhr.send();
+	};
+    document.getElementById("reload").onmousedown = () => {
+      document.getElementById("gun").style.visibility = "hidden";
+	  let xhr = new XMLHttpRequest();
+      xhr.open("GET", "/roulette/gun.php?reload&rounds=" + document.getElementById("rounds").value);
+      xhr.send();
+      setTimeout(() => {
+      	document.getElementById("gun").style.visibility = "visible";
+      }, 1e3);
+	};
+    
+    document.getElementById("dead").onmousedown = () => {
+		document.getElementById("dead").style.visibility = "hidden";
+	};
+  </script>
+
+
+</body></html>
