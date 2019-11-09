@@ -31,6 +31,7 @@
  
   <script>
     
+    var buso = 0;
   	document.getElementById("gun").onmousedown = () => {
 	  let xhr = new XMLHttpRequest();
       xhr.onload = () =>{
@@ -54,16 +55,15 @@
         }
       };
       xhr.open("GET", "/roulette/gun.php?shoot");
-      xhr.send();
+      document.getElementsByClassName("gun_bullets")[0].style.transform = "rotate(" + (++buso) * 60 + "deg)";
+      setTimeout(() => xhr.send(), 5e2);
 	};
     document.getElementById("reload").onmousedown = () => {
-      document.getElementById("gun").style.visibility = "hidden";
-	  let xhr = new XMLHttpRequest();
-      xhr.open("GET", "/roulette/gun.php?reload&rounds=" + document.getElementById("rounds").value);
-      xhr.send();
-      setTimeout(() => {
-      	document.getElementById("gun").style.visibility = "visible";
-      }, 1e3);
+		let xhr = new XMLHttpRequest();
+		xhr.open("GET", "/roulette/gun.php?reload&rounds=" + document.getElementById("rounds").value);
+		xhr.send();
+		document.getElementsByClassName("gun_bullets")[0].style.transform = "rotate(0deg)";
+		buso = 0;
 	};
     
     document.getElementById("dead").onmousedown = () => {
